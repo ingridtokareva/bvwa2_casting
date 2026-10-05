@@ -1,0 +1,117 @@
+/* ===== Společný vzhled (sdílený soubor - před většími změnami se domluvte) ===== */
+
+:root {
+    --bg: #f3f4f7;
+    --surface: #ffffff;
+    --ink: #1c1f2b;
+    --muted: #5d6272;
+    --accent: #a82a3f;        /* divadelní červená */
+    --accent-dark: #85202f;
+    --border: #d9dce4;
+    --success: #1f7a4d;
+    --error: #b3261e;
+    --radius: 6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main { flex: 1; padding-top: 1.5rem; padding-bottom: 2rem; }
+
+.container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 1rem; }
+
+h1, h2, h3 { line-height: 1.25; }
+a { color: var(--accent); }
+img { max-width: 100%; height: auto; }
+
+/* ----- Hlavička a navigace ----- */
+.site-header { background: var(--ink); color: #fff; }
+.header-inner {
+    display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: space-between; gap: .5rem 1.5rem; padding-top: .75rem; padding-bottom: .75rem;
+}
+.logo { color: #fff; font-size: 1.4rem; font-weight: 700; text-decoration: none; }
+.main-nav { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 1rem; }
+.main-nav a { color: #fff; text-decoration: none; }
+.main-nav a:hover { text-decoration: underline; }
+.main-nav a:focus-visible, .link-button:focus-visible, .btn:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 3px solid #f2b84b; outline-offset: 2px;
+}
+
+.inline-form { display: inline; margin: 0; }
+.link-button { background: none; border: 0; padding: 0; font: inherit; color: #fff; cursor: pointer; }
+.link-button:hover { text-decoration: underline; }
+
+.badge {
+    display: inline-block; min-width: 1.4em; padding: 0 .4em; border-radius: 1em;
+    background: var(--accent); color: #fff; font-size: .8rem; text-align: center;
+}
+
+/* ----- Tlačítka ----- */
+.btn {
+    display: inline-block; padding: .6rem 1.1rem; border: 0; border-radius: var(--radius);
+    background: var(--accent); color: #fff !important; font: inherit; font-weight: 600;
+    text-decoration: none; cursor: pointer;
+}
+.btn:hover { background: var(--accent-dark); }
+.btn-secondary { background: transparent; color: var(--accent) !important; border: 2px solid var(--accent); }
+.btn-secondary:hover { background: var(--accent); color: #fff !important; }
+.btn-small { padding: .3rem .8rem; }
+
+/* ----- Karty, mřížka, tabulky ----- */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+.grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: var(--surface); }
+th, td { padding: .6rem .8rem; text-align: left; border-bottom: 1px solid var(--border); }
+th { background: #eceef3; }
+
+/* ----- Formuláře ----- */
+.form { max-width: 460px; }
+.form-group { margin-bottom: 1rem; }
+label { display: block; margin-bottom: .25rem; font-weight: 600; }
+input[type="text"], input[type="email"], input[type="password"], input[type="tel"],
+input[type="date"], input[type="datetime-local"], select, textarea {
+    width: 100%; padding: .55rem .7rem; font: inherit;
+    border: 1px solid var(--border); border-radius: var(--radius); background: #fff;
+}
+textarea { min-height: 8rem; resize: vertical; }
+.field-error { color: var(--error); font-size: .9rem; margin-top: .25rem; }
+.hint { color: var(--muted); font-size: .9rem; }
+
+/* ----- Hlášky ----- */
+.alert { padding: .75rem 1rem; border-radius: var(--radius); margin-bottom: 1rem; border: 1px solid; }
+.alert-success { background: #e6f4ec; border-color: var(--success); color: var(--success); }
+.alert-error   { background: #fbe9e7; border-color: var(--error);   color: var(--error); }
+.alert-info    { background: #e8eefb; border-color: #3b5bb5;        color: #2a4290; }
+
+/* ----- Úvodní sekce ----- */
+.hero { padding: 3rem 0; }
+.hero h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); margin-top: 0; }
+.hero p { max-width: 36rem; color: var(--muted); }
+
+/* ----- Patička ----- */
+.site-footer { background: var(--ink); color: #c9ccd6; padding: 1rem 0; font-size: .9rem; }
+.site-footer p { margin: 0; }
+
+/* ----- Responzivita ----- */
+@media (max-width: 600px) {
+    .header-inner { flex-direction: column; align-items: flex-start; }
+    .hero { padding: 1.5rem 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+}

@@ -1,0 +1,12 @@
+# Lokální konfigurace (hesla k DB) - NIKDY necommitovat
+config/config.php
+
+# Nahrané soubory (necommitovat fotky), složka zůstává přes .gitkeep
+uploads/profile_photos/*
+!uploads/profile_photos/.gitkeep
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
