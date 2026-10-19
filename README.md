@@ -5,17 +5,6 @@ podávají přihlášky a píší si interní zprávy. Administrátor spravuje u
 
 **Tým:** Aidai Donbaeva (uživatelé a autentizace), Ingrid Tokareva (castingy, zprávy, administrace)
 
-## Spuštění (XAMPP)
-
-1. Naklonuj repozitář do `htdocs/`:
-   `git clone https://github.com/ingridtokareva/bvwa2_casting.git`
-2. Spusť Apache a MySQL v XAMPP.
-3. V phpMyAdmin importuj `database/schema.sql`, potom `database/seed.sql` (testovací data).
-4. Zkopíruj `config/config.example.php` jako `config/config.php` a uprav údaje k DB.
-   Pokud složka není `bvwa2_casting`, uprav i `base_url`.
-5. Otevři `http://localhost/bvwa2_casting/`.
-
-Testovací admin: `admin@casting.local` / `Admin123!`
 
 ## Struktura
 
