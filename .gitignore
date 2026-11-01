@@ -10,3 +10,4 @@ uploads/profile_photos/*
 .idea/
 .DS_Store
 Thumbs.db
+.vs/

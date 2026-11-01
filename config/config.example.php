@@ -20,10 +20,21 @@ return [
     // true = zobrazuje chyby (jen při vývoji), false = na ostrém serveru
     'debug' => true,
 
-    // Nahrávání profilových fotek
+    // Klíč pro šifrování osobních údajů a zpráv (AES-256-GCM), base64 z 32 náhodných bajtů.
+    // Vygeneruj příkazem:   php -r "echo base64_encode(random_bytes(32)), PHP_EOL;"
+    // POZOR: bez tohoto klíče nejdou šifrovaná data přečíst. Nikdy ho necommituj
+    // a po vytvoření dat ho neměň (jinak se data stanou nečitelnými).
+    'encryption_key' => '',
+
+    // Automatické odhlášení po nečinnosti (sekundy). Zadání: 20 minut.
+    'session_timeout' => 20 * 60,
+
+    // Nahrávání profilových fotek (výsledek se vždy uloží jako JPEG, kvalita 90, šířka 800 px)
     'upload' => [
-        'dir'       => __DIR__ . '/../uploads/profile_photos/',
-        'max_size'  => 2 * 1024 * 1024, // 2 MB
-        'mime_types' => ['image/jpeg', 'image/png', 'image/webp'],
+        'dir'        => __DIR__ . '/../uploads/profile_photos/',
+        'max_size'   => 5 * 1024 * 1024, // 5 MB
+        'width'      => 800,
+        'quality'    => 90,
+        'mime_types' => ['image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/x-ms-bmp', 'image/tiff', 'image/webp'],
     ],
 ];
