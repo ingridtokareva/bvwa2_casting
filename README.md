@@ -10,14 +10,43 @@ podávají přihlášky a píší si interní zprávy. Administrátor spravuje u
 
 ```
 config/      config.example.php (vzor), config.php (lokální, není v Gitu)
-includes/    init.php, db.php, functions.php, header.php, footer.php
+includes/    init.php, db.php, functions.php, header.php, footer.php,
+             crypto.php (šifrování), validation.php, photo.php, users.php,
+             castings.php (stavy, validace a načtení castingů)
 css/         style.css (společný vzhled)
-js/          main.js (+ skripty pro konkrétní stránky)
-database/    schema.sql, seed.sql
+js/          main.js, auth.js (validace formulářů registrace/přihlášení/profilu)
+database/    schema.sql, seed.php (admin + ukázkové castingy)
 uploads/     profile_photos/ (nahrané fotky, PHP se tu nespouští)
 admin/       administrátorské stránky
 *.php        veřejné stránky v kořeni (index, login, register, castings, ...)
 ```
+
+## Instalace (lokálně, XAMPP)
+
+1. Zkopíruj `config/config.example.php` jako `config/config.php`, nastav `base_url` a údaje k DB.
+2. Vygeneruj šifrovací klíč a vlož ho do `config.php` jako `encryption_key`:
+   `php -r "echo base64_encode(random_bytes(32));"`
+3. Importuj `database/schema.sql` (phpMyAdmin nebo `mysql -u root < database/schema.sql`).
+4. Spusť `php database/seed.php` – vytvoří admina (`admin` / `Admin123!`) a ukázkové castingy.
+5. Pro převod TIFF fotek musí být zapnuté PHP rozšíření **imagick**; bez něj se TIFF odmítne
+   s hláškou (JPEG, PNG, GIF, BMP a WebP fungují vždy, stačí GD).
+
+Každý člen týmu má vlastní DB a vlastní klíč. Po změně klíče jsou už uložená data nečitelná,
+takže po jeho změně znovu importuj `schema.sql` a spusť `seed.php`.
+
+## Šifrování a bezpečnost (užitečné i pro zprávy)
+
+- Osobní údaje (e-mail, jméno, příjmení, telefon, pohlaví, popis) jsou v DB šifrované
+  AES-256-GCM: `encryptText()` / `decryptText()` v `includes/crypto.php`.
+  **Zprávy (`subject`, `body`) se ukládají stejně** – zašifruj před INSERT, dešifruj při čtení.
+- Uživatele z DB čti přes `getUserById($id)` (vrací už rozšifrovaná data bez hashe hesla),
+  jméno pro zobrazení: `userFullName($user)`. Aktuální uživatel: `currentUser()`.
+- Unikátnost e-mailu hlídá sloupec `email_hash` (HMAC), proto se v SQL nedá hledat podle e-mailu
+  přímo, použij `emailTaken()` / `findUserForLogin()`.
+- Session: odhlášení po 20 min nečinnosti, nové ID při přihlášení a každých 5 min,
+  odhlášení při změně prohlížeče (User-Agent), cookie `httponly`, `use_strict_mode`.
+- Přihlášení: 5 špatných hesel po sobě = účet na 5 minut zablokován; stejná hláška pro
+  neexistující účet i špatné heslo.
 
 ## Jak psát stránku
 
@@ -56,6 +85,7 @@ require __DIR__ . '/includes/header.php';
 | `register.php`, `login.php`, `logout.php` | `castings.php`, `casting.php` |
 | `profile.php`, `edit_profile.php` | `apply.php`, `my_applications.php` |
 | zpracování fotek | `messages.php`, `message_send.php` |
+| | `casting_edit.php` (nový / úprava castingu, jen admin) |
 | | `admin/index.php`, `admin/users.php` |
 
 ## Git

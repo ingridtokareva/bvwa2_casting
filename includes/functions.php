@@ -58,11 +58,11 @@ function currentUser(): ?array
     if ($user === false) {
         $user = null;
         if (isLoggedIn()) {
-            $stmt = db()->prepare(
-                'SELECT id, email, first_name, last_name, role, photo FROM users WHERE id = ?'
-            );
+            // osobní údaje jsou v DB šifrované -> decryptUser() (includes/users.php)
+            $stmt = db()->prepare('SELECT * FROM users WHERE id = ?');
             $stmt->execute([currentUserId()]);
-            $user = $stmt->fetch() ?: null;
+            $row  = $stmt->fetch();
+            $user = $row ? decryptUser($row) : null;
 
             // uživatel mezitím smazán -> odhlásit
             if ($user === null) {
@@ -119,7 +119,9 @@ function csrfField(): string
 function verifyCsrf(): void
 {
     $token = $_POST['csrf_token'] ?? '';
-    if (!hash_equals($_SESSION['csrf_token'] ?? '', $token)) {
+    $known = $_SESSION['csrf_token'] ?? '';
+    // prázdný token nesmí projít (u nové session by se prázdný řetězec rovnal prázdnému)
+    if ($known === '' || !is_string($token) || !hash_equals($known, $token)) {
         http_response_code(403);
         die('Neplatný bezpečnostní token. Vrať se zpět a zkus to znovu.');
     }
